@@ -1,16 +1,10 @@
-require 'time'
-require 'sinatra'
+# encoding: utf-8
+require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'aws-sdk-core'
 
 class AwsPortal < Sinatra::Base
-
-	before do
-	end
-
-	after do
-	end
 
 	get '/' do
 		@navbar_buttun_active = "#navbar_button_home"
@@ -45,8 +39,4 @@ class AwsPortal < Sinatra::Base
 		erb :"ec2/summary"
 	end
 
-	get '/time' do
-		time = Time.now
-		'{"status":"success","time":"' + "#{time.iso8601}" + '"}'
-	end
 end
