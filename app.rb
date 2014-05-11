@@ -25,7 +25,7 @@ class AwsPortal < Sinatra::Base
 			reservation.instances.each do |instance|
 				instance_name = ""
 				instance.tags.each do |tag|
-					if instance_name = "" then
+					if tag.key == "Name" then
 						instance_name = tag.value
 					end
 				end
