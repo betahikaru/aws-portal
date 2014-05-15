@@ -1,0 +1,30 @@
+<div class="container">
+	<table class="table">
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			<th>Status</th>
+			<th>DNS Name</th>
+			<th>Public IP Address</th>
+			<th>Private IP Address</th>
+			<th>Instance ID</th>
+			<th>Action</th>
+		</tr>
+		<% @entities.each.with_index(1) do |entity, index| %>
+			<% if entity[:status] == "running" then %>
+		<tr class="success">
+			<% else %>
+		<tr class="">
+			<% end %>
+			<td><%= index %></td>
+			<td><%= entity[:name] %></td>
+			<td><%= entity[:status] %></td>
+			<td><%= entity[:dns_name] %></td>
+			<td><%= entity[:public_ip_address] %></td>
+			<td><%= entity[:private_ip_address] %></td>
+			<td><%= entity[:id] %></td>
+			<td><a href="/ec2/control/stop/<%= entity[:id] %>"><span>Stop</span></a></td>
+		</tr>
+		<% end %>
+	</table>
+</div>
