@@ -1,0 +1,10 @@
+<div>
+	<% if @error.nil? then %>
+		Success!
+	<% else %>
+		<p class="fail">
+		<%= @error %>
+		</p>
+	<% end %>
+</div>
+

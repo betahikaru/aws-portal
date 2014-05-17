@@ -44,6 +44,7 @@
 			<ul class="nav navbar-nav">
 			<li id="navbar_button_home"><a href="/">Home</a></li>
 			<li id="navbar_button_ec2_summary"><a href="/ec2/summary">EC2 Summary</a></li>
+			<li id="navbar_button_ec2_control"><a href="/ec2/control">EC2 Control</a></li>
 			</ul>
 		</div><!--/.nav-collapse -->
 		</div>
@@ -55,8 +56,11 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-	$("<%= @navbar_buttun_active %>").addClass("active");
+	var idNavbarButtonActive = '<%= @navbar_buttun_active %>';
 	</script>
-
+	<script type="text/javascript" src="/javascript/app.js"></script>
+	<% if content_for?(:javascripts) %>
+	<%= yield_content(:javascripts) %>
+	<% end %>
 </body>
 </html>
