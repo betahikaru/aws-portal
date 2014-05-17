@@ -2,9 +2,13 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'sinatra/contrib'
 require 'aws-sdk-core'
 
 class AwsPortal < Sinatra::Base
+
+	# for "sinatra/content-for"
+	register Sinatra::Contrib
 
 	get '/' do
 		@navbar_buttun_active = "#navbar_button_home"
@@ -47,7 +51,7 @@ class AwsPortal < Sinatra::Base
 		rescue => exp
 			p exp
 		else
-			@navbar_button_active = "navbar_button_ec2_control"
+			@navbar_buttun_active = "#navbar_button_ec2_control"
 			erb :"ec2/control"
 		end
 	end
