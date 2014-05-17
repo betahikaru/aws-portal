@@ -12,6 +12,7 @@ class AwsPortal < Sinatra::Base
 
 	get '/' do
 		@navbar_button_active = "#navbar_button_home"
+		@title = "Aws Protal"
 		erb :index
 	end
 
@@ -40,6 +41,7 @@ class AwsPortal < Sinatra::Base
 		end
 
 		@navbar_button_active = "#navbar_button_ec2_summary"
+		@title = "EC2 Summary"
 		erb :"ec2/summary"
 	end
 
@@ -52,6 +54,7 @@ class AwsPortal < Sinatra::Base
 			p exp
 		else
 			@navbar_button_active = "#navbar_button_ec2_control"
+			@title = "EC2 Control"
 			erb :"ec2/control"
 		end
 	end
@@ -70,6 +73,9 @@ class AwsPortal < Sinatra::Base
 			instances.each do |instance|
 				print "Stopping instance(id=#{instance.instance_id})\n"
 			end
+
+			@navbar_button_active = "#navbar_button_ec2_control"
+			@title = "EC2 Control"
 			erb :"ec2/control/stop"
 		end
 	end
