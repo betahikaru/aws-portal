@@ -11,7 +11,7 @@ class AwsPortal < Sinatra::Base
 	register Sinatra::Contrib
 
 	get '/' do
-		@navbar_buttun_active = "#navbar_button_home"
+		@navbar_button_active = "#navbar_button_home"
 		erb :index
 	end
 
@@ -39,7 +39,7 @@ class AwsPortal < Sinatra::Base
 			end
 		end
 
-		@navbar_buttun_active = "#navbar_button_ec2_summary"
+		@navbar_button_active = "#navbar_button_ec2_summary"
 		erb :"ec2/summary"
 	end
 
@@ -51,7 +51,7 @@ class AwsPortal < Sinatra::Base
 		rescue => exp
 			p exp
 		else
-			@navbar_buttun_active = "#navbar_button_ec2_control"
+			@navbar_button_active = "#navbar_button_ec2_control"
 			erb :"ec2/control"
 		end
 	end
