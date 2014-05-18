@@ -1,4 +1,5 @@
 <div class="container">
+	<h3>EC2 Instances</h3>
 	<table class="table">
 		<tr>
 			<th>#</th>
@@ -22,6 +23,31 @@
 			<td><%= entity[:public_ip_address] %></td>
 			<td><%= entity[:private_ip_address] %></td>
 			<td><%= entity[:id] %></td>
+		</tr>
+		<% end %>
+	</table>
+	<h3>Elastic IPs</h3>
+	<table class="table">
+		<tr>
+			<th>#</th>
+			<th>Public IP Address</th>
+			<th>Instance ID</th>
+			<th>Allocation ID</th>
+			<th>Association ID</th>
+			<th>Domain</th>
+		</tr>
+		<% @eipEntities.each.with_index(1) do |entity, index| %>
+			<% if entity[:instance_id] then %>
+		<tr class="success">
+			<% else %>
+		<tr class="danger">
+			<% end %>
+			<td><%= index %></td>
+			<td><%= entity[:public_ip_address] %></td>
+			<td><%= entity[:instance_id] %></td>
+			<td><%= entity[:domain] %></td>
+			<td><%= entity[:allocation_id] %></td>
+			<td><%= entity[:association_id] %></td>
 		</tr>
 		<% end %>
 	</table>
