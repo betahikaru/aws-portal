@@ -40,6 +40,16 @@ class AwsPortal < Sinatra::Base
 			end
 		end
 
+		@eipEntities = []
+		begin
+			eips = get_ec2_elasticips()
+			if eips.length > 0 then
+				@eipEntities = generate_eip_entities(eips)
+			end
+		rescue => exp
+			p exp
+		end
+
 		@navbar_button_active = "#navbar_button_ec2_summary"
 		@title = "EC2 Summary"
 		erb :"ec2/summary"
@@ -122,6 +132,18 @@ class AwsPortal < Sinatra::Base
 		end
 	end
 
+	def get_ec2_elasticips()
+		ec2 = Aws::EC2.new
+		begin
+			responce = ec2.describe_addresses()
+		rescue => exp
+			p exp
+			raise exp
+		else
+			return responce
+		end
+	end
+
 	def generate_entity(instances)
 		entities = []
 		instances.each do |instance|
@@ -142,6 +164,21 @@ class AwsPortal < Sinatra::Base
 			entities.push entity
 		end
 		return entities
+	end
+
+	def generate_eip_entities(eips)
+		eipEntities = []
+		eips.addresses.each do |address|
+			eipEntity = {
+				:public_ip_address => address.public_ip,
+				:instance_id => address.instance_id,
+				:domain => address.domain,
+				:allocation_id => address.allocation_id,
+				:association_id => address.association_id
+			}
+			eipEntities.push(eipEntity)
+		end
+		return eipEntities
 	end
 
 end
