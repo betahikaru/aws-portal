@@ -17,37 +17,34 @@ class AwsPortal < Sinatra::Base
 	end
 
 	get '/ec2/summary' do
-		ec2 = Aws::EC2.new
-		@entities = []
-		resp = ec2.describe_instances(max_results: 10)
-		resp.reservations.each do |reservation|
-			reservation.instances.each do |instance|
-				instance_name = ""
-				instance.tags.each do |tag|
-					if tag.key == "Name" then
-						instance_name = tag.value
-					end
-				end
-				entity = {
-					:name => instance_name,
-					:status => instance.state.name,
-					:dns_name => instance.public_dns_name,
-					:public_ip_address => instance.public_ip_address,
-					:private_ip_address => instance.private_ip_address,
-					:id => instance.instance_id
-				}
-				@entities.push entity
+		@ec2_entities = []
+		begin
+			instances = get_ec2_instances()
+			if instances.length > 0 then
+				@ec2_entities = generate_instance_entity(instances)
 			end
+		rescue Aws::Errors::MissingRegionError => exp
+			@error = "Missing region error."
+			erb :"error"
+		rescue Aws::EC2::Errors::UnauthorizedOperation => exp
+			@error = "You have no permission for this action."
+			erb :"error"
+		rescue => exp
+			p exp
+			@error = "Unknown error."
+			erb :"error"
 		end
 
-		@eipEntities = []
+		@eip_entities = []
 		begin
 			eips = get_ec2_elasticips()
 			if eips.length > 0 then
-				@eipEntities = generate_eip_entities(eips)
+				@eip_entities = generate_eip_entities(eips)
 			end
 		rescue => exp
 			p exp
+			@error = "Unknown error."
+			erb :"error"
 		end
 
 		@navbar_button_active = "#navbar_button_ec2_summary"
@@ -58,15 +55,18 @@ class AwsPortal < Sinatra::Base
 	get '/ec2/control' do
 		begin
 			instances = get_ec2_instances()
-			ec2_entities = generate_entity(instances)
-			@entities = ec2_entities
+			if instances.length > 0 then
+				@ec2_entities = generate_instance_entity(instances)
+			end
 		rescue => exp
 			p exp
-		else
-			@navbar_button_active = "#navbar_button_ec2_control"
-			@title = "EC2 Control"
-			erb :"ec2/control"
+			@error = "Unknown error."
+			erb :"error"
 		end
+
+		@navbar_button_active = "#navbar_button_ec2_control"
+		@title = "EC2 Control"
+		erb :"ec2/control"
 	end
 
 	get '/ec2/control/stop/:instance_id' do
@@ -75,10 +75,13 @@ class AwsPortal < Sinatra::Base
 			instances = stop_ec2_instance(false, instance_id)
 		rescue Aws::EC2::Errors::UnauthorizedOperation
 			@error = "You have no permission for this action."
+			erb :"error"
 		rescue Aws::EC2::Errors::InvalidInstanceIDMalformed
 			@error = "Invalid parameter (instance-id: #{instance_id})"
+			erb :"error"
 		rescue Aws::EC2::Errors::DryRunOperation
 			@error = "This is dry_run. Request would have succeeded."
+			erb :"error"
 		else
 			instances.each do |instance|
 				print "Stopping instance(id=#{instance.instance_id})\n"
@@ -144,7 +147,7 @@ class AwsPortal < Sinatra::Base
 		end
 	end
 
-	def generate_entity(instances)
+	def generate_instance_entity(instances)
 		entities = []
 		instances.each do |instance|
 			instance_name = ""

@@ -1,59 +1,63 @@
 <div class="container">
 <div class="list-group" id="js-ec2-control-instance-list">
-	<% @entities.each.with_index(1) do |entity, index| %>
-		<% itemId = "list_instance_#{index}" %>
-		<a href="#<%= itemId%>" class="list-group-item" id="<%= itemId %>">
-			<h4 class="list-group-item-heading"><%= entity[:name] %></h4>
-			<p class="list-group-item-text">
-				<span>Status:</span>
-				<span><%= entity[:status]%></span>
-			</p>
-			<p class="list-group-item-text">
-				<span>Instance ID:</span>
-				<span><%= entity[:id]%></span>
-			</p>
-			<p class="list-group-item-text">
-				<span>Public DNS:</span>
-				<span><%= entity[:dns_name]%></span>
-			</p>
-			<p class="list-group-item-text">
-				<span>Public IP:</span>
-				<span><%= entity[:public_ip_address]%></span>
-			</p>
-			<p class="list-group-item-text">
-				<span>Private IP:</span>
-				<span><%= entity[:private_ip_address]%></span>
-			</p>
-			<% if entity[:status] == "running" then %>
-				<!-- Button trigger modal -->
-				<button class="btn btn-primary" data-toggle="modal" data-target="#modal-<%=index %>">
-					Stop instance
-				</button>
-			<% end %>
+	<% unless @entities.nil? %>
+		<% @entities.each.with_index(1) do |entity, index| %>
+			<% itemId = "list_instance_#{index}" %>
+			<a href="#<%= itemId%>" class="list-group-item" id="<%= itemId %>">
+				<h4 class="list-group-item-heading"><%= entity[:name] %></h4>
+				<p class="list-group-item-text">
+					<span>Status:</span>
+					<span><%= entity[:status]%></span>
+				</p>
+				<p class="list-group-item-text">
+					<span>Instance ID:</span>
+					<span><%= entity[:id]%></span>
+				</p>
+				<p class="list-group-item-text">
+					<span>Public DNS:</span>
+					<span><%= entity[:dns_name]%></span>
+				</p>
+				<p class="list-group-item-text">
+					<span>Public IP:</span>
+					<span><%= entity[:public_ip_address]%></span>
+				</p>
+				<p class="list-group-item-text">
+					<span>Private IP:</span>
+					<span><%= entity[:private_ip_address]%></span>
+				</p>
+				<% if entity[:status] == "running" then %>
+					<!-- Button trigger modal -->
+					<button class="btn btn-primary" data-toggle="modal" data-target="#modal-<%=index %>">
+						Stop instance
+					</button>
+				<% end %>
 
-			<!-- Modal -->
-			<div class="modal fade" id="modal-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="modalLabelForStopInstancs" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Stop instance</h4>
-						</div>
-						<div class="modal-body">
-							<p>停止してよろしいですか？</p>
-							<ul>
-								<li><%= entity[:id] %></li>
-								<li><%= entity[:name] %></li>
-							</ul>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" data-ec2-instance-id="<%= entity[:id] %>" data-btn-ec2-action="stop-instance">Stop</button>
-						</div>
-					</div><!-- /.modal-content -->
-				</div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->
-		</a>
+				<!-- Modal -->
+				<div class="modal fade" id="modal-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="modalLabelForStopInstancs" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Stop instance</h4>
+							</div>
+							<div class="modal-body">
+								<p>停止してよろしいですか？</p>
+								<ul>
+									<li><%= entity[:id] %></li>
+									<li><%= entity[:name] %></li>
+								</ul>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary" data-ec2-instance-id="<%= entity[:id] %>" data-btn-ec2-action="stop-instance">Stop</button>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+			</a>
+		<% end %>
+	<% else %>
+		<h2>No instance.</h2>
 	<% end %>
 </div>
 </div>

@@ -10,20 +10,25 @@
 			<th>Private IP Address</th>
 			<th>Instance ID</th>
 		</tr>
-		<% @entities.each.with_index(1) do |entity, index| %>
-			<% if entity[:status] == "running" then %>
-		<tr class="success">
-			<% else %>
-		<tr class="">
+		<% unless @ec2_entities.nil? %>
+			<% @ec2_entities.each.with_index(1) do |entity, index| %>
+				<%
+				if entity[:status] == "running" then
+					class_line = "success"
+				else
+					class_line = ""
+				end
+				%>
+				<tr class="<%= class_line %>">
+					<td><%= index %></td>
+					<td><%= entity[:name] %></td>
+					<td><%= entity[:status] %></td>
+					<td><%= entity[:dns_name] %></td>
+					<td><%= entity[:public_ip_address] %></td>
+					<td><%= entity[:private_ip_address] %></td>
+					<td><%= entity[:id] %></td>
+				</tr>
 			<% end %>
-			<td><%= index %></td>
-			<td><%= entity[:name] %></td>
-			<td><%= entity[:status] %></td>
-			<td><%= entity[:dns_name] %></td>
-			<td><%= entity[:public_ip_address] %></td>
-			<td><%= entity[:private_ip_address] %></td>
-			<td><%= entity[:id] %></td>
-		</tr>
 		<% end %>
 	</table>
 	<h3>Elastic IPs</h3>
@@ -36,19 +41,21 @@
 			<th>Association ID</th>
 			<th>Domain</th>
 		</tr>
-		<% @eipEntities.each.with_index(1) do |entity, index| %>
-			<% if entity[:instance_id] then %>
-		<tr class="success">
-			<% else %>
-		<tr class="danger">
+		<% unless @eip_entities.nil? %>
+			<% @eip_entities.each.with_index(1) do |entity, index| %>
+				<% if entity[:instance_id] then %>
+			<tr class="success">
+				<% else %>
+			<tr class="danger">
+				<% end %>
+				<td><%= index %></td>
+				<td><%= entity[:public_ip_address] %></td>
+				<td><%= entity[:instance_id] %></td>
+				<td><%= entity[:domain] %></td>
+				<td><%= entity[:allocation_id] %></td>
+				<td><%= entity[:association_id] %></td>
+			</tr>
 			<% end %>
-			<td><%= index %></td>
-			<td><%= entity[:public_ip_address] %></td>
-			<td><%= entity[:instance_id] %></td>
-			<td><%= entity[:domain] %></td>
-			<td><%= entity[:allocation_id] %></td>
-			<td><%= entity[:association_id] %></td>
-		</tr>
 		<% end %>
 	</table>
 </div>
