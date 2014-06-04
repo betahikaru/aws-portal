@@ -5,10 +5,15 @@ require 'sinatra/reloader'
 require 'sinatra/contrib'
 require 'aws-sdk-core'
 
-class AwsPortal < Sinatra::Base
+module AwsPortal
+class Application < Sinatra::Base
 
 	# for "sinatra/content-for"
 	register Sinatra::Contrib
+
+	# setting for directory path
+	set :root, File.join(File.dirname(__FILE__), "..")
+	set :views, Proc.new { File.join(root, "views") }
 
 	get '/' do
 		@navbar_button_active = "#navbar_button_home"
@@ -184,4 +189,5 @@ class AwsPortal < Sinatra::Base
 		return eipEntities
 	end
 
+end
 end
