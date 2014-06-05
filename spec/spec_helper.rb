@@ -6,6 +6,7 @@ require 'rubygems'
 require 'sinatra'
 require 'rspec'
 require 'rack/test'
+require 'aws-sdk-core'
 
 set :environment, :test
 set :run, false

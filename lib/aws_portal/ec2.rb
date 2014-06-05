@@ -59,6 +59,9 @@ module AwsPortal
     end
 
     def generate_instance_entity(instances)
+      if instances.nil? or instances.size == 0 then
+        return []
+      end
       entities = []
       instances.each do |instance|
         instance_name = ""
@@ -81,6 +84,9 @@ module AwsPortal
     end
 
     def generate_eip_entities(eips)
+      if eips.nil? or eips.size == 0 then
+        return []
+      end
       eipEntities = []
       eips.addresses.each do |address|
         eipEntity = {
