@@ -1,6 +1,6 @@
 # encoding: utf-8
 ENV['RACK_ENV'] = 'test'
-require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
+require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
 describe "AppPortal" do
   include Rack::Test::Methods
