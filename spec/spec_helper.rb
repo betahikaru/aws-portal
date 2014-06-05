@@ -1,4 +1,5 @@
 # encoding: utf-8
+ENV['RACK_ENV'] = 'test'
 require File.join(File.dirname(__FILE__), '..', 'lib', 'aws_portal.rb')
 
 require 'rubygems'

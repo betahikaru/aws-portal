@@ -1,8 +1,7 @@
 # encoding: utf-8
-ENV['RACK_ENV'] = 'test'
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
-describe "AppPortal" do
+describe AwsPortal::Application do
   include Rack::Test::Methods
 
   def app
