@@ -1,3 +1,3 @@
-require File.dirname(__FILE__) + '/app.rb'
+require File.dirname(__FILE__) + '/lib/aws_portal.rb'
 
-run AwsPortal
+run AwsPortal::Application

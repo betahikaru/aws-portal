@@ -1,10 +1,12 @@
 # encoding: utf-8
-require File.join(File.dirname(__FILE__), '..', 'app.rb')
+ENV['RACK_ENV'] = 'test'
+require File.join(File.dirname(__FILE__), '..', 'lib', 'aws_portal.rb')
 
 require 'rubygems'
 require 'sinatra'
 require 'rspec'
 require 'rack/test'
+require 'aws-sdk-core'
 
 set :environment, :test
 set :run, false
