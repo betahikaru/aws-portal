@@ -1,6 +1,8 @@
 # encoding: utf-8
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
+require 'aws_portal/ec2'
+
 describe AwsPortal::Ec2 do
   include AwsPortal::Ec2
 
