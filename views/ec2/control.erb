@@ -1,7 +1,7 @@
 <div class="container">
 <div class="list-group" id="js-ec2-control-instance-list">
-	<% unless @entities.nil? %>
-		<% @entities.each.with_index(1) do |entity, index| %>
+	<% unless @ec2_entities.nil? %>
+		<% @ec2_entities.each.with_index(1) do |entity, index| %>
 			<% itemId = "list_instance_#{index}" %>
 			<a href="#<%= itemId%>" class="list-group-item" id="<%= itemId %>">
 				<h4 class="list-group-item-heading"><%= entity[:name] %></h4>
