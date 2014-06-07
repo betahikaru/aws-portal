@@ -7,8 +7,8 @@ body {
 .starter-template {
   padding: 40px 30px;
   text-align: center;
-  background: -moz-linear-gradient(top, #ddd, #fff);
-  background: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#fff));
+  background: -moz-linear-gradient(top, #f6f6f6, #ffffff);
+  background: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ffffff));
 }
 .starter-template h1 {
   font-size: 46px;
@@ -21,4 +21,14 @@ body {
   margin: 0;
   max-width: 100%;
   width: 100%;
+}
+
+.gradient-gray {
+  background: -moz-linear-gradient(top, #eeeeee, #ffffff);
+  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#ffffff));
+}
+
+.zurui-text-shadow {
+  font-color: #4a2d08;
+  text-shadow: -1px 1px 0 rgba(255, 255, 255, 1);
 }
