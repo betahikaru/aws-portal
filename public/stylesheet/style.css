@@ -1,8 +1,34 @@
+/* layout.erb */
 body {
-	padding-top: 50px;
+  padding-top: 50px;
 }
 
+/* index.erb */
 .starter-template {
-	padding: 40px 15px;
-	text-align: center;
+  padding: 40px 30px;
+  text-align: center;
+  background: -moz-linear-gradient(top, #f6f6f6, #ffffff);
+  background: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ffffff));
+}
+.starter-template h1 {
+  font-size: 46px;
+}
+.starter-template p {
+  font-size: 26px;
+}
+.fluid-area {
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+  width: 100%;
+}
+
+.gradient-gray {
+  background: -moz-linear-gradient(top, #eeeeee, #ffffff);
+  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#ffffff));
+}
+
+.zurui-text-shadow {
+  font-color: #4a2d08;
+  text-shadow: -1px 1px 0 rgba(255, 255, 255, 1);
 }

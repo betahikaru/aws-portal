@@ -1,16 +1,17 @@
 <div class="container">
-	<h3>EC2 Instances</h3>
-	<table class="table">
-		<tr>
-			<th>#</th>
-			<th>Name</th>
-			<th>Status</th>
-			<th>DNS Name</th>
-			<th>Public IP Address</th>
-			<th>Private IP Address</th>
-			<th>Instance ID</th>
-		</tr>
-		<% unless @ec2_entities.nil? %>
+<div class="row">
+	<% unless @ec2_entities.size == 0 %>
+		<h3>Instances</h3>
+		<table class="table">
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Status</th>
+				<th>DNS Name</th>
+				<th>Public IP Address</th>
+				<th>Private IP Address</th>
+				<th>Instance ID</th>
+			</tr>
 			<% @ec2_entities.each.with_index(1) do |entity, index| %>
 				<%
 				if entity[:status] == "running" then
@@ -29,19 +30,23 @@
 					<td><%= entity[:id] %></td>
 				</tr>
 			<% end %>
-		<% end %>
-	</table>
-	<h3>Elastic IPs</h3>
-	<table class="table">
-		<tr>
-			<th>#</th>
-			<th>Public IP Address</th>
-			<th>Instance ID</th>
-			<th>Allocation ID</th>
-			<th>Association ID</th>
-			<th>Domain</th>
-		</tr>
-		<% unless @eip_entities.nil? %>
+		</table>
+	<% else %>
+		<h3>No Instances</h3>
+	<% end %>
+</div> <!-- .row -->
+<div class="row">
+	<% unless @eip_entities.size == 0 %>
+		<h3>Elastic IPs</h3>
+		<table class="table">
+			<tr>
+				<th>#</th>
+				<th>Public IP Address</th>
+				<th>Instance ID</th>
+				<th>Allocation ID</th>
+				<th>Association ID</th>
+				<th>Domain</th>
+			</tr>
 			<% @eip_entities.each.with_index(1) do |entity, index| %>
 				<% if entity[:instance_id] then %>
 			<tr class="success">
@@ -56,6 +61,9 @@
 				<td><%= entity[:association_id] %></td>
 			</tr>
 			<% end %>
-		<% end %>
-	</table>
-</div>
+		</table>
+	<% else %>
+		<h3>No Elastic IPs</h3>
+	<% end %>
+</div> <!-- .row -->
+</div> <!-- .container -->
