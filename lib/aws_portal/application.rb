@@ -5,10 +5,12 @@ require 'sinatra/contrib'
 require 'aws-sdk-core'
 
 require 'aws_portal/ec2'
+require 'aws_portal/helpers/html_helper'
 
 module AwsPortal
   class Application < Sinatra::Base
     include AwsPortal::Ec2
+    include AwsPortal::Helpers::HtmlHelper
 
     # for "sinatra/content-for"
     register Sinatra::Contrib
@@ -19,7 +21,7 @@ module AwsPortal
 
     get '/' do
       @navbar_button_active = "#navbar_button_home"
-      @title = "Aws Protal"
+      @title = site_title("")
       erb :index
     end
 
@@ -55,7 +57,7 @@ module AwsPortal
       end
 
       @navbar_button_active = "#navbar_button_ec2_summary"
-      @title = "EC2 Summary"
+      @title = site_title("EC2 Summary")
       erb :"ec2/summary"
     end
 
@@ -72,7 +74,7 @@ module AwsPortal
       end
 
       @navbar_button_active = "#navbar_button_ec2_control"
-      @title = "EC2 Control"
+      @title = site_title("EC2 Control")
       erb :"ec2/control"
     end
 
@@ -95,9 +97,10 @@ module AwsPortal
         end
 
         @navbar_button_active = "#navbar_button_ec2_control"
-        @title = "EC2 Control"
+        @title = site_title("EC2 Control")
         erb :"ec2/control/stop"
       end
     end
+
   end
 end
