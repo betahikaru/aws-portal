@@ -5,22 +5,22 @@
     <table class="table">
       <tr>
         <th>#</th>
-        <th>environment_name</th>
-        <th>environment_id</th>
         <th>application_name</th>
         <th>description</th>
-        <th>endpoint_url</th>
-        <th>status</th>
+        <th>date_created</th>
+        <th>date_updated</th>
+        <th>versions</th>
+        <th>configuration_templates</th>
       </tr>
       <% @elasticbeanstalk_applications.each.with_index(1) do |entity, index| %>
         <tr>
           <td><%= index %></td>
-          <td><%= entity[:environment_name] %></td>
-          <td><%= entity[:environment_id] %></td>
           <td><%= entity[:application_name] %></td>
           <td><%= entity[:description] %></td>
-          <td><%= entity[:endpoint_url] %></td>
-          <td><%= entity[:status] %></td>
+          <td><%= entity[:date_created] %></td>
+          <td><%= entity[:date_updated] %></td>
+          <td><%= entity[:versions].to_s %></td>
+          <td><%= entity[:configuration_templates].to_s %></td>
         </tr>
       <% end %>
     </table>

@@ -11,10 +11,11 @@ module AwsPortal
       @elasticbeanstalk_applications = []
       @elasticbeanstalk_environments = []
       begin
-        environments = get_elasticbeanstalk_environments()
+        eb = Aws::ElasticBeanstalk.new
+        environments = get_elasticbeanstalk_environments(eb)
         @elasticbeanstalk_environments = environments if environments.length > 0
 
-        applications = get_elasticbeanstalk_applications()
+        applications = get_elasticbeanstalk_applications(eb)
         @elasticbeanstalk_applications = applications if applications.length > 0
       rescue Aws::Errors::MissingRegionError => exp
         @error = "Missing region error."
@@ -33,27 +34,25 @@ module AwsPortal
       erb :"elastic_beanstalk/summary"
     end
 
-    def get_elasticbeanstalk_applications()
+    def get_elasticbeanstalk_applications(eb)
       applications = []
       begin
-        eb = Aws::ElasticBeanstalk.new
-        responce = eb.describe_environments()
+        responce = eb.describe_applications()
         unless responce[:applications].nil?
           responce[:applications].each do |application|
             applications.push(application)
           end
         end
       rescue => exp
-        p exp
+        p "get_elasticbeanstalk_applications: " + exp.to_s
         raise exp
       end
       applications
     end
 
-    def get_elasticbeanstalk_environments()
+    def get_elasticbeanstalk_environments(eb)
       environments = []
       begin
-        eb = Aws::ElasticBeanstalk.new
         responce = eb.describe_environments()
         unless responce[:environments].nil?
           responce[:environments].each do |environment|
