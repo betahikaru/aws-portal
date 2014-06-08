@@ -5,11 +5,13 @@ require 'sinatra/contrib'
 require 'aws-sdk-core'
 
 require 'aws_portal/ec2'
+require 'aws_portal/elastic_beanstalk'
 require 'aws_portal/helpers/html_helper'
 
 module AwsPortal
   class Application < Sinatra::Base
     include AwsPortal::Ec2
+    include AwsPortal::ElasticBeanstalk
     include AwsPortal::Helpers::HtmlHelper
 
     # for "sinatra/content-for"
@@ -59,6 +61,11 @@ module AwsPortal
       @navbar_button_active = "#navbar_button_ec2_summary"
       @title = site_title("EC2 Summary")
       erb :"ec2/summary"
+    end
+
+
+    get '/elasticbeanstalk/summary' do
+      get_elasticbeanstalk_summary()
     end
 
     get '/ec2/control' do

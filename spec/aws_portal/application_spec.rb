@@ -14,6 +14,7 @@ describe AwsPortal::Application do
     /
     /ec2/summary
     /ec2/control
+    /elasticbeanstalk/summary
     }.each do |uri|
     describe "'#{uri}' page" do
       it "return 200 OK" do
