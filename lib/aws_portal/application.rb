@@ -2,6 +2,7 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/contrib'
+require 'sinatra/partial'
 require 'aws-sdk-core'
 
 require 'aws_portal/ec2'
@@ -16,6 +17,10 @@ module AwsPortal
 
     # for "sinatra/content-for"
     register Sinatra::Contrib
+
+    # for "partial 'some_partial', template_engine: :erb"
+    register Sinatra::Partial
+    set :partial_template_engine, :erb
 
     # setting for directory path
     set :root, File.join(File.dirname(__FILE__), "..", "..")
@@ -58,9 +63,13 @@ module AwsPortal
         erb :"error"
       end
 
+      @elb_entities = []
+
       @navbar_button_active = "#navbar_button_ec2_summary"
       @title = site_title("EC2 Summary")
-      erb :"ec2/summary"
+      erb :"ec2/summary", locals: {
+        elb_partial: partial(:"ec2/elastic_load_balancer", template_engine: :erb)
+      }
     end
 
 
