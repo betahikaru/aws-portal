@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <% if defined? @notice and !@notice.nil? %>
+      <div class="alert alert-success">
+        <%= @notice %>
+      </div>
+    <% end %>
+    <% if defined? @error and !@error.nil? %>
+      <div class="alert alert-warning">
+        <%= @error %>
+      </div>
+    <% end %>
+  </div>
+</div>

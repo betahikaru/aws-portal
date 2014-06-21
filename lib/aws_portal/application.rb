@@ -127,5 +127,12 @@ module AwsPortal
       end
     end
 
+    get '/ec2/control/start/:instance_id' do
+      ec2 = Aws::EC2.new
+      instance_id = params[:instance_id]
+      dry_run = params[:dry_run] || false
+      start_ec2_instance(ec2, instance_id, dry_run)
+    end
+
   end
 end

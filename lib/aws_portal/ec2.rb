@@ -26,6 +26,43 @@ module AwsPortal
       end
     end
 
+    def start_ec2_instance(ec2, instance_id, dry_run)
+      responce = nil
+      @navbar_button_active = "#navbar_button_ec2_control"
+      @title = site_title("EC2 Control")
+
+      begin
+        responce = ec2.start_instances(
+          instance_ids: [instance_id],
+          dry_run: dry_run
+        )
+      rescue Aws::EC2::Errors::UnauthorizedOperation
+        @error = "You have no permission for this action."
+        erb :"ec2/control/start"
+      rescue Aws::EC2::Errors::InvalidInstanceIDMalformed
+        @error = "Invalid parameter (instance-id: #{instance_id})"
+        erb :"ec2/control/start"
+      rescue Aws::EC2::Errors::DryRunOperation
+        @error = "This is dry_run. Request would have succeeded."
+        erb :"ec2/control/start"
+      rescue => exp
+        @error = exp.to_s
+        erb :"ec2/control/start"
+      else
+        unless responce.nil? then
+          instance_ids = []
+          responce.starting_instances.each do |instance|
+            instance_ids.push(instance[:instance_id])
+          end
+          @notice = "Succeeded to send request (Launch EC2 instance : #{instance_ids.to_s})"
+          erb :"ec2/control/start"
+        else
+          @error = "Empty responce..."
+          erb :"ec2/control/start"
+        end
+      end
+    end
+
     def get_ec2_instances()
       ec2 = Aws::EC2.new
       instances = []
