@@ -22,21 +22,31 @@
               <span><%= entity[:private_ip_address] || "-" %></span>
             </div>
             <div>
-              <% if entity[:status] == "running" then %>
+              <% if entity[:status] == "stopped" then %>
                 <!-- Button trigger modal -->
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-<%=index %>">
-                  Stop instance
+                <button class="btn btn-default" data-toggle="modal" data-target="#modal-start-<%=index %>">
+                  Start
                 </button>
               <% else %>
                 <button class="btn">
-                  No oparation
+                  Start
+                </button>
+              <% end %>
+              <% if entity[:status] == "running" then %>
+                <!-- Button trigger modal -->
+                <button class="btn btn-default" data-toggle="modal" data-target="#modal-stop-<%=index %>">
+                  Stop
+                </button>
+              <% else %>
+                <button class="btn">
+                  Stop
                 </button>
               <% end %>
             </div>
           </div>
 
           <!-- Modal -->
-          <div class="modal fade" id="modal-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="modalLabelForStopInstancs" aria-hidden="true">
+          <div class="modal fade" id="modal-stop-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="modalLabelForStopInstancs" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -57,6 +67,30 @@
               </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
           </div><!-- /.modal -->
+
+          <!-- Modal - Start Instance -->
+          <div class="modal fade" id="modal-start-<%= index %>" tabindex="-1" role="dialog" aria-labelledby="modalLabelForStopInstancs" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">Start instance</h4>
+                </div>
+                <div class="modal-body">
+                  <p>このインスタンスを開始しますか？</p>
+                  <h4>Name:</h4>
+                  <span><%= entity[:name] || "-"  %></span>
+                  <h4>Instance ID:</h4>
+                  <span><%= entity[:id] || "-" %></span>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" data-ec2-instance-id="<%= entity[:id] %>" data-btn-ec2-action="start-instance">Start</button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+
         </div>
       </div>
     <% end %>
