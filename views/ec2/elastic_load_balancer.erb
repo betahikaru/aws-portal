@@ -5,9 +5,26 @@
   <table class="table">
     <tr>
       <th>#</th>
+      <th>load_balancer_name</th>
+      <th>dns_name</th>
+      <th>instances</th>
+      <th>availability_zones</th>
     </tr>
-    <tr>
-      <td>#</td>
-    </tr>
+    <% @elb_entities.each.with_index(1) do |elb, index| %>
+      <tr>
+        <td><%= index %></td>
+        <td><%= elb[:load_balancer_name] %></td>
+        <td><%= elb[:dns_name] %></td>
+        <td>
+          <% instances = elb[:instances] %>
+          <% unless instances.nil? %>
+            <% instances.each do |instance| %>
+              <p><%= instance[:instance_id] %></p>
+            <% end %>
+          <% end %>
+        </td>
+        <td><%= elb[:availability_zones].to_s %></td>
+      </tr>
+    <% end %>
   </table>
 <% end %>

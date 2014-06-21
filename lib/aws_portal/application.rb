@@ -64,6 +64,15 @@ module AwsPortal
       end
 
       @elb_entities = []
+      begin
+        elb = Aws::ElasticLoadBalancing.new
+        responce = get_elastiloadbalancers(elb)
+        unless responce.nil?
+          @elb_entities = responce[:load_balancer_descriptions]
+        end
+      rescue => exp
+        p exp
+      end
 
       @navbar_button_active = "#navbar_button_ec2_summary"
       @title = site_title("EC2 Summary")

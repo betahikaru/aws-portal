@@ -58,6 +58,17 @@ module AwsPortal
       end
     end
 
+    def get_elastiloadbalancers(elb)
+      begin
+        responce = elb.describe_load_balancers()
+      rescue => exp
+        p exp
+        raise exp
+      else
+        return responce
+      end
+    end
+
     def generate_instance_entity(instances)
       if instances.nil? or instances.size == 0 then
         return []
