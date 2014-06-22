@@ -1,5 +1,14 @@
 <div class="container">
 <div class="row">
+  <!-- Notice -->
+  <% if defined? @error and !@error.nil? %>
+    <div class="alert alert-warning">
+      <%= @error %>
+    </div>
+  <% end %>
+</div> <!-- .row -->
+
+<div class="row">
   <% unless @elasticbeanstalk_applications.size == 0 %>
     <h3>Elastic Beanstalk Applications</h3>
     <table class="table">
