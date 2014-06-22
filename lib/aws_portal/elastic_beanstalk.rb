@@ -8,6 +8,8 @@ module AwsPortal
 
     # get '/elasticbeanstalk/summary' do
     def get_elasticbeanstalk_summary()
+      @navbar_button_active = "#navbar_button_elasticbeanstlak_summary"
+      @title = site_title("EB Summary")
       @elasticbeanstalk_applications = []
       @elasticbeanstalk_environments = []
       begin
@@ -17,20 +19,16 @@ module AwsPortal
 
         applications = get_elasticbeanstalk_applications(eb)
         @elasticbeanstalk_applications = applications if applications.length > 0
-      rescue Aws::Errors::MissingRegionError => exp
-        @error = "Missing region error."
-        erb :"error"
-      rescue Aws::EC2::Errors::UnauthorizedOperation => exp
-        @error = "You have no permission for this action."
-        erb :"error"
       rescue => exp
-        p exp
-        @error = "Unknown error."
-        erb :"error"
+        if exp.kind_of?(Aws::Errors::MissingRegionError)
+          @error = "Missing region error."
+        elsif exp.kind_of?(Aws::EC2::Errors::UnauthorizedOperation)
+          @error = "You have no permission for reading ELB information."
+        else
+          @error = "Internal Error"
+          p "get_elasticbeanstalk_summary() : #{exp.class} : #{exp.to_s}"
+        end
       end
-
-      @navbar_button_active = "#navbar_button_elasticbeanstlak_summary"
-      @title = site_title("EB Summary")
       erb :"elastic_beanstalk/summary"
     end
 
