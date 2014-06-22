@@ -30,36 +30,38 @@ module AwsPortal
       responce = nil
       @navbar_button_active = "#navbar_button_ec2_control"
       @title = site_title("EC2 Control")
+      @details = []
 
       begin
         responce = ec2.start_instances(
           instance_ids: [instance_id],
           dry_run: dry_run
         )
-      rescue Aws::EC2::Errors::UnauthorizedOperation
-        @error = "You have no permission for this action."
-        erb :"ec2/control/start"
-      rescue Aws::EC2::Errors::InvalidInstanceIDMalformed
-        @error = "Invalid parameter (instance-id: #{instance_id})"
-        erb :"ec2/control/start"
-      rescue Aws::EC2::Errors::DryRunOperation
-        @error = "This is dry_run. Request would have succeeded."
-        erb :"ec2/control/start"
       rescue => exp
-        @error = exp.to_s
+        @error = "Failed to start instance #{instance_id}"
+        if exp.kind_of?(Aws::EC2::Errors::UnauthorizedOperation)
+          @details.push "You have no permission for this action."
+        elsif exp.kind_of?(Aws::EC2::Errors::InvalidInstanceIDMalformed)
+          @details.push "Invalid parameter (instance-id: #{instance_id})"
+        elsif exp.kind_of?(Aws::EC2::Errors::DryRunOperation)
+          @details.push "This is dry_run."
+        else
+          @details.push exp.to_s
+        end
         erb :"ec2/control/start"
       else
         unless responce.nil? then
-          instance_ids = []
+          @notice = "Succeeded to send the starting request"
           responce.starting_instances.each do |instance|
-            instance_ids.push(instance[:instance_id])
+            id = instance[:instance_id]
+            current_state = instance[:current_state][:name]
+            previous_state = instance[:previous_state][:name]
+            @details.push "EC2 instance (#{id}) : #{previous_state} => #{current_state}"
           end
-          @notice = "Succeeded to send request (Launch EC2 instance : #{instance_ids.to_s})"
-          erb :"ec2/control/start"
         else
           @error = "Empty responce..."
-          erb :"ec2/control/start"
         end
+        erb :"ec2/control/start"
       end
     end
 

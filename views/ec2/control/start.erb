@@ -1,14 +1,36 @@
 <div class="container">
   <div class="row">
+
+    <!-- Notice -->
     <% if defined? @notice and !@notice.nil? %>
       <div class="alert alert-success">
         <%= @notice %>
       </div>
     <% end %>
+
+    <!-- Error -->
     <% if defined? @error and !@error.nil? %>
       <div class="alert alert-warning">
         <%= @error %>
       </div>
     <% end %>
+
+    <!-- Detail -->
+    <% if defined? @details and !@details.nil? and @details.size > 0 %>
+      <ul>
+        <% @details.each do |detail| %>
+          <li>
+            <span><%= detail %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <!-- Back link -->
+    <div>
+      <a href="/ec2/control"class="btn btn-default" role="button">
+        Return to EC2 Control
+      </a>
+    </div>
   </div>
 </div>
